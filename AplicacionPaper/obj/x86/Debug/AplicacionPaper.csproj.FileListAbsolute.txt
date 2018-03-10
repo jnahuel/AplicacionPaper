@@ -1,0 +1,85 @@
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe.config
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\Interop.MLApp.dll
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.pdb
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.CuentaRegresiva.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.exe
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.pdb
+D:\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe.config
+D:\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe
+D:\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.pdb
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\Interop.MLApp.dll
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.CuentaRegresiva.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.exe
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.pdb
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe.config
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.pdb
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\Interop.MLApp.dll
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.CuentaRegresiva.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.exe
+C:\Users\Nahuel\Desktop\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.pdb
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe.config
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\Interop.MLApp.dll
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.exe
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.pdb
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.pdb
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.CuentaRegresiva.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
+C:\Users\marti\Desktop\RepoGit - ültima\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe.config
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\Interop.MLApp.dll
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.exe
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.pdb
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.exe
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\bin\x86\Debug\AplicacionPaper.pdb
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.CuentaRegresiva.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
+C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache

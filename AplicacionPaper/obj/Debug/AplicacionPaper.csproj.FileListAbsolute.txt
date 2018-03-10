@@ -1,0 +1,17 @@
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\Debug\AplicacionPaper.exe.config
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\Debug\AplicacionPaper.exe
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\bin\Debug\AplicacionPaper.pdb
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.Form1.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.Properties.Resources.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.exe
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.pdb
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.Visual.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.Tiempos.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.csprojResolveAssemblyReference.cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.PuertoSerie.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.TomarDatosPersonales.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\Interop.MLApp.dll
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.csproj.ResolveComReference.cache
+D:\Repositorio de Github\AplicacionPaper\AplicacionPaper\obj\Debug\AplicacionPaper.CuentaRegresiva.resources
