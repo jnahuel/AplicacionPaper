@@ -25,12 +25,14 @@ namespace AplicacionPaper
 
         // Objeto para ejecutar el codigo de Matlab
         MLApp.MLApp funcionMatlab = new MLApp.MLApp();
+        object[] decisionTomada;                        // Para almacenar el resultado del algoritmo
 
         // Unicos parametros que son fijos y solo dependen del caso:
         // La cantidad de bytes por trama (33) y la cantidad de tramas por segundo (250)
         private const int bytesALeer = 33;
         private const int tramasPorSegundo = 250;
         private const int tiempoEntreTramas = 1000 / tramasPorSegundo;    // Cuantos mili segundos pasan entre tramas sucesivas
+        private const double factorEscala = 0.02235;
 
         // Se considera una tiempo maximo a la recepcion de 10 tramas para que se considere como caida la comunicacion
         private const int maximoTiempoReadSerie = 100 * tiempoEntreTramas;
@@ -68,6 +70,7 @@ namespace AplicacionPaper
         static Thread threadGrafico;
         static Thread threadCuentaRegresiva;
         static Thread threadLecturaPuertoSerie;
+        static Thread threadGuardarExcel;
         static bool threadsIniciados = false;
         static bool finalizarThreadLecturaPuertoSerie = false;
 
@@ -82,23 +85,21 @@ namespace AplicacionPaper
         static int maximoDeTramasRecibidas = tramasPorSegundo * tiempoEstudioSegundos;
 
         // Variables globales de la comunicacion serie
-        private byte[] datosCasco = new byte[3 * maximoDeTramasRecibidas + 6];          // Son 3 bytes por trama, por la cantidad cantidad total de tramas
         private byte[] markersPosiciones = new byte[maximoDeTramasRecibidas + 2];
         private int posicionDelMarker = 0;
         byte[] trama = new byte[bytesALeer];                  // Almacena cada trama recibida desde el casco
-        private byte[] numeroTramaArray = new byte[maximoDeTramasRecibidas];
-        private byte canalALeer = 8;
         const int bitsDeDatos = 8;
         const int offsetPuertoSerie = 0;
         private bool redimensionarBufferSerie = true;          // Para indicar que se modificó el tiempo total del estudio y puede afectar al buffer serie
+        DatosCasco DatosDelCasco;                               // Objeto que contendrá los datos recibidos
 
         // Objeto para manejar el puerto serie
         static SerialPort puertoSerie = new SerialPort("COM1", 115200, Parity.None, bitsDeDatos, StopBits.One);
 
         // Datos personales
-        string apellido = "";
-        string nombre = "";
-        int edad;
+        string apellido = "Prueba";
+        string nombre = "Prueba";
+        int edad = 20;
         bool experiencia = false;
 
         // Variables para manejar la base de datos
@@ -121,6 +122,8 @@ namespace AplicacionPaper
         List<int> secuenciaFinal = new List<int>();
         bool desordenada;
         bool rueda;
+
+        string nombreArchivoCompleto;
 
 
 
@@ -345,9 +348,7 @@ namespace AplicacionPaper
 
                         // Se redimensiona el buffer del puerto serie en función del tiempo total del estudio
                         maximoDeTramasRecibidas = tramasPorSegundo * tiempoEstudioSegundos;
-                        datosCasco = new byte[3 * maximoDeTramasRecibidas + 6];          // Son 3 bytes por trama, por la cantidad cantidad total de tramas
                         markersPosiciones = new byte[maximoDeTramasRecibidas + 2];
-                        numeroTramaArray = new byte[maximoDeTramasRecibidas];
                         puertoSerie.ReadBufferSize = maximoDeTramasRecibidas * bytesALeer;
 
                         // Luego de redimensionar el buffer, se vuelve a iniciar el puerto serie
@@ -363,6 +364,7 @@ namespace AplicacionPaper
                 Thread.Sleep(200);            // Se genera una pequeña demora para que procese correctamente la instrucción
 
                 // Se toma la fecha y hora de comienzo
+                fechaHora = DateTime.Now;
                 fechaInicioEstudio = fechaHora.ToShortDateString();
                 horaInicioEstudio = fechaHora.ToLongTimeString();
 
@@ -372,6 +374,9 @@ namespace AplicacionPaper
 
                 // A su vez, mientras esté en curso, no pueden modificar los parametros
                 configuracionToolStripMenuItem.Enabled = false;
+
+                // Se genera el objeto para almacenar los datos del estudio
+                DatosDelCasco = new DatosCasco();
 
                 // Se asignan las funciones de los threads
                 threadLecturaPuertoSerie = new Thread(new ThreadStart(funcionThreadLecturaPuertoSerie));
@@ -392,7 +397,7 @@ namespace AplicacionPaper
                 // Se genera una demora ficticia sólo para sincronizar el inicio de los threads con el timer principal
                 Thread.Sleep(0);
                 threadsIniciados = true;
-                timerTiempoEstudio.Start();
+//                timerTiempoEstudio.Start();
             }
         }
 
@@ -643,6 +648,7 @@ namespace AplicacionPaper
                 }   // Fin del "elseif( desordenada )"
             }   // Fin del "for"
 
+            timerTiempoEstudio.Start();
 
             // Luego de generar todo el vector de secuencias, se procede a iluminar los símbolos en dicho orden
             while (true)        // Bloque perpetuo
@@ -737,7 +743,8 @@ namespace AplicacionPaper
                     break;      // Termina el bloque "while"
                 }
 
-                separarDatos(trama, numeroTramaRecibidas++);
+                DatosDelCasco.AlmacenarTrama( trama );
+                numeroTramaRecibidas++;
                 Thread.Sleep(5);
             }
 
@@ -747,9 +754,13 @@ namespace AplicacionPaper
                 while (numeroTramaRecibidas < maximoDeTramasRecibidas)
                 {
                     contadorBytesRecibidos[numeroTramaRecibidas] = puertoSerie.Read(trama, offsetPuertoSerie, bytesALeer);
-                    separarDatos(trama, numeroTramaRecibidas++);
+                    DatosDelCasco.AlmacenarTrama(trama);
+                    numeroTramaRecibidas++;
                     Thread.Sleep(0);
                 }
+
+                while( DatosDelCasco.LongitudDeLaLista() <= ( maximoDeTramasRecibidas + 1 ) )
+                        DatosDelCasco.AgregarMuestraNula();
 
                 // Luego de completar la recepcion de los datos, se le envia la orden al casco de detener el streaming de datos
                 puertoSerie.Write("s");
@@ -760,21 +771,6 @@ namespace AplicacionPaper
                 MessageBox.Show("Se perdio la comunicacion con el casco. Por favor, reinicie el puerto");
             }
 
-        }
-
-
-
-        /*      Funciones axuliares para procesar los datos recibidos     ********************************************************/
-
-        // Funcion para seleccionar los datos del canal deseado dentro de la trama
-        private void separarDatos(byte[] trama, int numeroTramaRecibidas)
-        {
-            numeroTramaArray[numeroTramaRecibidas] = trama[1];
-
-            // Separacion de los datos del canal elegido
-            datosCasco[3 * numeroTramaRecibidas]     = trama[canalALeer * 3];               // Primer byte del canal
-            datosCasco[3 * numeroTramaRecibidas + 1] = trama[canalALeer * 3 + 1];        // Segundo byte del canal
-            datosCasco[3 * numeroTramaRecibidas + 2] = trama[canalALeer * 3 + 2];        // Tercer byte del canal
         }
 
 
@@ -815,16 +811,97 @@ namespace AplicacionPaper
                 funcionMatlab.Execute(@"cd " + Directory.GetCurrentDirectory() + @"\MatlabScripts\SeisOpciones");
 
             object resultadoMatlab = null;
-            funcionMatlab.Feval("script_Principal", 1, out resultadoMatlab, datosCasco, markersPosiciones);
-            object[] decisionTomada = resultadoMatlab as object[];
+            funcionMatlab.Feval("script_Principal", 1, out resultadoMatlab, DatosDelCasco.LeerCanal(7), markersPosiciones);
+            decisionTomada = resultadoMatlab as object[];
 
             // Se muestra un mensaje diciendo que el estudio termino correctamente
-            MessageBox.Show("Estudio finalizado correctamente. La opcion es " + decisionTomada[0] );
+            //MessageBox.Show("Estudio finalizado correctamente. La opcion es " + decisionTomada[0] );
 
             // Finalizado correctamente el estudio, se almacenan los valores en la base de datos
-            guardarDatos( decisionTomada );
+            guardarDatos();
+
+            // Finalmente, las muestras se guardan en el archivo excel
+            threadGuardarExcel = new Thread(new ThreadStart(funcionThreadGuardarExcel));
+            threadGuardarExcel.Start();      // Se lanza el thread para que muestre la cuenta regresiva
+            threadGuardarExcel.Join();
+
+            //GuardarDatosExcel();
+            MessageBox.Show("Todo ok");
         }
 
+
+
+        /********************************************************************************************************************************************/
+        /********************************************************************************************************************************************/
+        /*                                                           THREAD EXCEL                                                                   */
+        /********************************************************************************************************************************************/
+        /********************************************************************************************************************************************/
+
+
+
+        // Este es el thread que se encarga de guadar los datos en el archivo excel y mostrar en pantalla el progreso de la operación
+        private void funcionThreadGuardarExcel()
+        {
+
+
+            Microsoft.Office.Interop.Excel.Application aplicacion;
+            Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
+            Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
+            aplicacion = new Microsoft.Office.Interop.Excel.Application();
+            libros_trabajo = aplicacion.Workbooks.Add();
+            hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
+
+            // Primero se escriben los encabezados
+            hoja_trabajo.Cells[1, 1] = "Canal 0";
+            hoja_trabajo.Cells[1, 2] = "Canal 1";
+            hoja_trabajo.Cells[1, 3] = "Canal 2";
+            hoja_trabajo.Cells[1, 4] = "Canal 3";
+            hoja_trabajo.Cells[1, 5] = "Canal 4";
+            hoja_trabajo.Cells[1, 6] = "Canal 5";
+            hoja_trabajo.Cells[1, 7] = "Canal 6";
+            hoja_trabajo.Cells[1, 8] = "Canal 7";
+            hoja_trabajo.Cells[1, 9] = "Markers";
+
+            // Luego se escriben los datos
+            for (int filaExcel = 0; filaExcel < DatosDelCasco.LongitudDeLaLista(); filaExcel++)
+            {
+                hoja_trabajo.Cells[filaExcel + 2, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 9] = markersPosiciones[filaExcel];
+            }
+
+            // Finalmente se agregan detalles de configuración
+            hoja_trabajo.Cells[1, 11] = "Apellido";
+            hoja_trabajo.Cells[1, 12] = apellido;
+            hoja_trabajo.Cells[2, 11] = "Edad";
+            hoja_trabajo.Cells[2, 12] = edad;
+            hoja_trabajo.Cells[3, 11] = "Opcion elegida";
+            hoja_trabajo.Cells[3, 12] = textoOpcionElegida;
+            hoja_trabajo.Cells[4, 11] = "Opcion resultante";
+            hoja_trabajo.Cells[4, 12] = decisionTomada[0];
+            hoja_trabajo.Cells[5, 11] = "Tiempo de descanso";
+            hoja_trabajo.Cells[5, 12] = tiempoDeDescanso;
+            hoja_trabajo.Cells[6, 11] = "Tiempo de excitacion";
+            hoja_trabajo.Cells[6, 12] = tiempoDeExcitacion;
+            hoja_trabajo.Cells[7, 11] = "Tiempo del estudio";
+            hoja_trabajo.Cells[7, 12] = tiempoEstudioSegundos;
+
+            // Definiciones para hacer más legible el nombre del archivo en excel
+            string extension = @".xls";
+            string nombre = fechaHora.ToString().Replace(" ", "-").Replace(":", "-").Replace("/", "-");
+            string carpetaContenedora = @"\Seniales\";
+            string ubicacionArchivo = carpetaContenedora + nombre + extension;
+
+            libros_trabajo.SaveAs(Directory.GetCurrentDirectory() + ubicacionArchivo, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
+            libros_trabajo.Close(true);
+            aplicacion.Quit();
+        }
 
 
         /********************************************************************************************************************************************/
@@ -870,7 +947,7 @@ namespace AplicacionPaper
         /********************************************************************************************************************************************/
 
         // Funcion para guardar los datos en la base de datos luego de terminar correctamente el estudio
-        private void guardarDatos( object[] decisionTomada )
+        private void guardarDatos()
         {
             // Comprobacion de que este abierto el lazo con la base de datos
             if (conexionBaseDatos.State != ConnectionState.Open)
@@ -893,7 +970,7 @@ namespace AplicacionPaper
             comandoBaseDatos.Parameters.AddWithValue("TiempoDeEstudio", tiempoEstudioSegundos);
             comandoBaseDatos.Parameters.AddWithValue("CantidadDeSimbolos", cantidadOpcionesActuales);
             comandoBaseDatos.Parameters.AddWithValue("SimboloElegido", textoOpcionElegida);
-            comandoBaseDatos.Parameters.AddWithValue("SimboloResultante", decisionTomada[0] );            // Falta implementar. Sera el resultado del procesamiento
+            comandoBaseDatos.Parameters.AddWithValue("SimboloResultante", decisionTomada[0] );
             comandoBaseDatos.Parameters.AddWithValue("Dia", fechaInicioEstudio);
             comandoBaseDatos.Parameters.AddWithValue("Hora", horaInicioEstudio);
             comandoBaseDatos.Parameters.AddWithValue("ColorDeFondo", colorDeFondo);
@@ -902,7 +979,7 @@ namespace AplicacionPaper
             comandoBaseDatos.Parameters.AddWithValue("TamanioLetra", tamanioLetra);
             comandoBaseDatos.Parameters.AddWithValue("TamanioPantalla", tamanioPantalla);
             comandoBaseDatos.Parameters.AddWithValue("CantidadDeFilas", filasTotales);
-            comandoBaseDatos.Parameters.AddWithValue("Archivo", "No implementado");
+            comandoBaseDatos.Parameters.AddWithValue("Archivo", nombreArchivoCompleto);
             comandoBaseDatos.Parameters.AddWithValue("Secuencia", secuenciaElegida);
 
             // Ejecucion de la orden para ingresar los nuevos datos a la base
@@ -910,6 +987,44 @@ namespace AplicacionPaper
             conexionBaseDatos.Close();
         }
 
+
+
+
+        // Funcion para guardar los datos en un archivo de excel
+        private void GuardarDatosExcel()
+        {
+            Microsoft.Office.Interop.Excel.Application aplicacion;
+            Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
+            Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
+            aplicacion = new Microsoft.Office.Interop.Excel.Application();
+            libros_trabajo = aplicacion.Workbooks.Add();
+            hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
+
+            //Recorremos el DataGridView rellenando la hoja de trabajo
+            for (int filaExcel = 0; filaExcel < maximoDeTramasRecibidas; filaExcel++)
+            {
+                hoja_trabajo.Cells[filaExcel + 1, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 1, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
+            }
+
+            // Definiciones para hacer más legible el nombre del archivo en excel
+            string extension = @".xls";
+            string nombre = fechaHora.ToString().Replace(" ", "-").Replace(":","-").Replace("/","-");
+            string carpetaContenedora = @"\Seniales\";
+            string ubicacionArchivo = carpetaContenedora + nombre + extension;
+
+            nombreArchivoCompleto = nombre;
+
+            libros_trabajo.SaveAs( Directory.GetCurrentDirectory() + ubicacionArchivo, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
+            libros_trabajo.Close(true);
+            aplicacion.Quit();
+        }
 
     }
 }

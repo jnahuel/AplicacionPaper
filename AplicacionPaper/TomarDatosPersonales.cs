@@ -42,8 +42,16 @@ namespace AplicacionPaper
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // Se colocan los datos suministrados en los displays
-            this.tbxApellido.Text = apellido;
-            this.tbxNombre.Text = nombre;
+            if( apellido == "Prueba" )          // No se lo inicializo
+                this.tbxApellido.Text = "";
+            else
+                this.tbxApellido.Text = apellido;
+
+            if( nombre == "Prueba" )
+                this.tbxNombre.Text = "";
+            else
+                this.tbxNombre.Text = nombre;
+            
             this.tbxEdad.Text = edad.ToString();
             if (experiencia == true) { rbtnSi.Checked = true; }
             else { rbtnNo.Checked = true; }

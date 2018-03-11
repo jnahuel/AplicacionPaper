@@ -1,22 +1,3 @@
-%% Informacion del experimento y datos de interfaz con usuario
-
-%Cada Estudio se compone de la siguiente manera 
-%
-% -----------------------------------------------------------
-% |         ESTUDIO                                         |
-% -----------------------------------------------------------
-% | EleccionSI      | EleccionNO        | EleccionLibre     |
-% -----------------------------------------------------------
-%
-% Dentro de cada Elecci√≥n, existen Secuencias:
-% -----------------------------------------------------------
-% |         ESTUDIO                                         |   Estudio
-% -----------------------------------------------------------
-% | EleccionSI      | EleccionNO        | EleccionLibre     |   Elecciones
-% -----------------------------------------------------------
-% |si|no|si|no|si|no| si|no|si|no|si|no |si|no|si|no|si|no  |   Secuencias
-% -----------------------------------------------------------
-
 % Caracteres utilizados
 % 
 % @ comienza experimento       = 0x40 = 64
@@ -26,18 +7,9 @@
 % # comienza estimulo 2        = 0x23 = 35
 % ! finaliza estimulo 2        = 0x21 = 33
 
-function [opcion] = script_Principal( datos, MARKER )
+function [opcion] = script_Principal( CH_01, MARKER )
 
-ganancia = 24;  % 0.02235 [uVolts/cuenta] *seg√∫n la bibliofraf√≠a.
-factorEscala = (4.5 / ganancia) / (2^23 - 1);
-
-
-CH_01 = zeros( length(datos) / 3, 1 );
-for i = 1 : length( CH_01 ) - 1
-    CH_01(i) = double( Convert_3_Bytes_To_Int32( datos(i*3), datos(i*3+1), datos(i*3+2) ) ) * factorEscala;
-end
-
-
+CH_01 = CH_01';
 
 INICIO_ELECCION = uint8('@');
 FIN_ELECCION    = uint8('$');
@@ -46,17 +18,7 @@ MARCA_NO        = uint8('#');
 CANT_MUESTRAS   = 125;
 fs              = 250;
 
-%% Carga de datos del estudio EEG
-
-%path = 'G:\BCI\Estudios\Software1x2\fer1.CSV'; % Tiene que ser:  SI (V·lido)
-%path = './Estudios/Software1x2/fer2.CSV'; % Tiene que ser:  NO (Falso)
-%path = './Estudios/Software1x2/fer4.CSV'; % Tiene que ser:  SI - NO (V·lido)
-%path = './Estudios/Software1x2/fer5.CSV'; % Tiene que ser:  SI (V·lido)
-%path = './Estudios/Software1x2/mati1.CSV';% Tiene que ser:  NO (V·lido)
-
 nEleccion = 1;
-
-%[CH_AF3,CH_F7,CH_F3,CH_FC5,CH_T7,CH_P7,CH_01,CH_02,CH_P8,CH_T8,CH_FC6,CH_F4,CH_F8,CH_AF4,CH_CMS,CH_DRL,MARKER]  = CargarWorkspace(path);
 
 % Armo un cellarray con los buffers que van a ser analizados luego. 
 % La idea es que, puede que se use solo el Oz, o varios, pero que la
@@ -85,9 +47,6 @@ temp = {CH_01,MARKER'};
 %Obtengo elecciones
 eleccion = CortarEleccion(temp,INICIO_ELECCION,FIN_ELECCION);
 
-%disp('Cantidad de Elecciones');
-%disp(length(eleccion));
-
 siCortados = {zeros(length(eleccion))};
 noCortados = {zeros(length(eleccion))};
 siPromedio = {zeros(CANT_MUESTRAS)};
@@ -114,7 +73,7 @@ for elec = 1 : length(eleccion)
  
  %% Procesamiento (wavelet) y informacion de energia
     
-    fprintf('\n\n Eleccion numero: %d',nEleccion); nEleccion = nEleccion + 1;
+    %fprintf('\n\n Eleccion numero: %d',nEleccion); nEleccion = nEleccion + 1;
     
     %% Forma (1)
     % verificacionEnergia(siNormalizado{elec},noNormalizado{elec},0);
@@ -122,13 +81,13 @@ for elec = 1 : length(eleccion)
 
 %% Ploteo de resultados obtenidos en tiempo
     
-    ejeX        = 'Tiempo';
-    ejeY        = 'Amplitud[V]';
-    gridEstado  = 0;
-    nMuestras   = length(siNormalizado{elec});
-    xTemp       = 0:1/fs:(nMuestras-1)*1/fs;
-    titulo      = 'Resultados superpuestos antes de aplicar wavelet';
-    %plotTiempo(siNormalizado{elec},noNormalizado{elec},elec,xTemp,titulo,ejeX,ejeY,gridEstado);
+%     ejeX        = 'Tiempo';
+%     ejeY        = 'Amplitud[V]';
+%     gridEstado  = 0;
+%     nMuestras   = length(siNormalizado{elec});
+%     xTemp       = 0:1/fs:(nMuestras-1)*1/fs;
+%     titulo      = 'Resultados superpuestos antes de aplicar wavelet';
+%     plotTiempo(siNormalizado{elec},noNormalizado{elec},elec,xTemp,titulo,ejeX,ejeY,gridEstado);
     
     %% Forma (2)
     % De la forma (1) est· normalizada la energÌa y da el mismo valor de
@@ -142,12 +101,12 @@ for elec = 1 : length(eleccion)
 
 %% Ploteo de resultados obtenidos en tiempo
     
-    ejeX        = 'Tiempo';
-    ejeY        = 'Amplitud[V]';
-    gridEstado  = 0;
-    nMuestras = length(siNormalizado{elec}); xTemp = 0:1/fs:(nMuestras-1)*1/fs;
-    titulo     = 'Resultados superpuestos';
-    plotTiempo(resultado{1},resultado{2},elec,xTemp,titulo,ejeX,ejeY,gridEstado);
+%     ejeX        = 'Tiempo';
+%     ejeY        = 'Amplitud[V]';
+%     gridEstado  = 0;
+%     nMuestras = length(siNormalizado{elec}); xTemp = 0:1/fs:(nMuestras-1)*1/fs;
+%     titulo     = 'Resultados superpuestos';
+%     plotTiempo(resultado{1},resultado{2},elec,xTemp,titulo,ejeX,ejeY,gridEstado);
     
 %% Evaluacion de eleccion por energias (250mS a 350mSeg estandar)
 
@@ -160,12 +119,6 @@ for elec = 1 : length(eleccion)
     else
         opcion = 'NO';
     end
-    
-%     encabezado = [ 'senial' 'markers' ];
-%     nombrearchivo = datestr(now);
-%     
-%     filename = ['C:\Users\Nahuel\Desktop\prueba/' nombrearchivo];
-%     xlswrite( filename, datos );
     
 end
 

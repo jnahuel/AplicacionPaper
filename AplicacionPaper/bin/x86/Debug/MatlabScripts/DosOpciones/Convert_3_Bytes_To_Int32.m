@@ -20,6 +20,9 @@ else
     b0 = dec2bin(typecast(int8(c),'uint8'),8);
 end;
 
+
+
+
 valBin = [b3 b2 b1 b0];
 
 outValue = typecast(uint32(bin2dec(valBin)),'int32');
