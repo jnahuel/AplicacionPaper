@@ -32,7 +32,6 @@ namespace AplicacionPaper
         private const int bytesALeer = 33;
         private const int tramasPorSegundo = 250;
         private const int tiempoEntreTramas = 1000 / tramasPorSegundo;    // Cuantos mili segundos pasan entre tramas sucesivas
-        private const double factorEscala = 0.02235;
 
         // Se considera una tiempo maximo a la recepcion de 10 tramas para que se considere como caida la comunicacion
         private const int maximoTiempoReadSerie = 100 * tiempoEntreTramas;
@@ -137,6 +136,8 @@ namespace AplicacionPaper
         {
             // Cogido necesario para Windows
             InitializeComponent();
+
+            CheckForIllegalCrossThreadCalls = false;
 
             // Por defecto, se muestran inicialmente 2 opciones
             cantidadOpcionesActuales = 2;
@@ -279,7 +280,7 @@ namespace AplicacionPaper
             secuenciaElegida = "Aleatorio";
         }
 
-        // Submenú para la configuración visual
+        // Submenú para ingresar los datos personales
         private void datosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var formularioConfiguracionDatosPersonales = new TomarDatosPersonales( apellido, nombre, edad, experiencia ))
@@ -582,21 +583,21 @@ namespace AplicacionPaper
         private void funcionThreadGrafico()
         {
             // Declaracion de variables
-            int tiempoAcumulado = 0;                                    // En funcion del tiempo que lleva el estudio, se determinan las posiciones de los markers
+            int tiempoAcumulado = 0;                                        // En funcion del tiempo que lleva el estudio, se determinan las posiciones de los markers
             byte[] marcasSeccionInicio, marcasSeccionFinal;
             int numeroBoton;
             int botonActual;
-            int[] contadorRepeticiones = new int[6];        // Para llevar la cuenta de la cantidad de veces que se enciende cada boton
-            Random aleatorio = new Random();        // Objeto de la clase Random para usar los métodos aleatorios
-            List<int> lista = new List<int>();     // En la lista se irán almacenando los valores generados
-            int longitudDeSecuencia = (tiempoEstudioMiliSegundos) / (tiempoDeDescanso + tiempoDeExcitacion);        // Total de detellos
+            int[] contadorRepeticiones = new int[6];                        // Para llevar la cuenta de la cantidad de veces que se enciende cada boton
+            Random aleatorio = new Random();                                // Objeto de la clase Random para usar los métodos aleatorios
+            List<int> lista = new List<int>();                              // En la lista se irán almacenando los valores generados
+            int longitudDeSecuencia = (tiempoEstudioMiliSegundos) / (tiempoDeDescanso + tiempoDeExcitacion);                    // Total de detellos
             int repeticionesMaximasPorSimbolo = longitudDeSecuencia / cantidadOpcionesActuales;                                // Destellos totales por símbolo
 
             // En función de la cantidad de símbolos se elijen las marcas de seccionamiento
             if (cantidadOpcionesActuales == 2)
             {
-                marcasSeccionInicio = marcasInicialesDosOpciones;       // Las marcas de inicio de sección son las que corresponden a 2 símbolos
-                marcasSeccionFinal = marcasFinalesDosOpciones;          // Lo mismo para las de fin de sección
+                marcasSeccionInicio = marcasInicialesDosOpciones;               // Las marcas de inicio de sección son las que corresponden a 2 símbolos
+                marcasSeccionFinal = marcasFinalesDosOpciones;                  // Lo mismo para las de fin de sección
             }
             else
             {
@@ -767,6 +768,17 @@ namespace AplicacionPaper
             }
             else
             {
+                // Se detienen el timer principal y se cancela el thread grafico
+                timerTiempoEstudio.Stop();
+                try { threadGrafico.Abort(); }
+                catch ( ThreadAbortException ) {}
+
+                // Se deshabilitan las opciones para iniciar un nuevo estudio o para detenerlo
+                iniciarToolStripMenuItem.Enabled = false;
+                detenerToolStripMenuItem.Enabled = false;
+                reiniciarToolStripMenuItem.Enabled = true;
+                configuracionToolStripMenuItem.Enabled = true;
+
                 // Se indica al usuario la condicion para que reinicie el estudio
                 MessageBox.Show("Se perdio la comunicacion con el casco. Por favor, reinicie el puerto");
             }
@@ -820,88 +832,10 @@ namespace AplicacionPaper
             // Finalizado correctamente el estudio, se almacenan los valores en la base de datos
             guardarDatos();
 
-            // Finalmente, las muestras se guardan en el archivo excel
-            threadGuardarExcel = new Thread(new ThreadStart(funcionThreadGuardarExcel));
-            threadGuardarExcel.Start();      // Se lanza el thread para que muestre la cuenta regresiva
-            threadGuardarExcel.Join();
+            guardarDatosEnExcel();
 
-            //GuardarDatosExcel();
-            MessageBox.Show("Todo ok");
         }
 
-
-
-        /********************************************************************************************************************************************/
-        /********************************************************************************************************************************************/
-        /*                                                           THREAD EXCEL                                                                   */
-        /********************************************************************************************************************************************/
-        /********************************************************************************************************************************************/
-
-
-
-        // Este es el thread que se encarga de guadar los datos en el archivo excel y mostrar en pantalla el progreso de la operación
-        private void funcionThreadGuardarExcel()
-        {
-
-
-            Microsoft.Office.Interop.Excel.Application aplicacion;
-            Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
-            Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
-            aplicacion = new Microsoft.Office.Interop.Excel.Application();
-            libros_trabajo = aplicacion.Workbooks.Add();
-            hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
-
-            // Primero se escriben los encabezados
-            hoja_trabajo.Cells[1, 1] = "Canal 0";
-            hoja_trabajo.Cells[1, 2] = "Canal 1";
-            hoja_trabajo.Cells[1, 3] = "Canal 2";
-            hoja_trabajo.Cells[1, 4] = "Canal 3";
-            hoja_trabajo.Cells[1, 5] = "Canal 4";
-            hoja_trabajo.Cells[1, 6] = "Canal 5";
-            hoja_trabajo.Cells[1, 7] = "Canal 6";
-            hoja_trabajo.Cells[1, 8] = "Canal 7";
-            hoja_trabajo.Cells[1, 9] = "Markers";
-
-            // Luego se escriben los datos
-            for (int filaExcel = 0; filaExcel < DatosDelCasco.LongitudDeLaLista(); filaExcel++)
-            {
-                hoja_trabajo.Cells[filaExcel + 2, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 9] = markersPosiciones[filaExcel];
-            }
-
-            // Finalmente se agregan detalles de configuración
-            hoja_trabajo.Cells[1, 11] = "Apellido";
-            hoja_trabajo.Cells[1, 12] = apellido;
-            hoja_trabajo.Cells[2, 11] = "Edad";
-            hoja_trabajo.Cells[2, 12] = edad;
-            hoja_trabajo.Cells[3, 11] = "Opcion elegida";
-            hoja_trabajo.Cells[3, 12] = textoOpcionElegida;
-            hoja_trabajo.Cells[4, 11] = "Opcion resultante";
-            hoja_trabajo.Cells[4, 12] = decisionTomada[0];
-            hoja_trabajo.Cells[5, 11] = "Tiempo de descanso";
-            hoja_trabajo.Cells[5, 12] = tiempoDeDescanso;
-            hoja_trabajo.Cells[6, 11] = "Tiempo de excitacion";
-            hoja_trabajo.Cells[6, 12] = tiempoDeExcitacion;
-            hoja_trabajo.Cells[7, 11] = "Tiempo del estudio";
-            hoja_trabajo.Cells[7, 12] = tiempoEstudioSegundos;
-
-            // Definiciones para hacer más legible el nombre del archivo en excel
-            string extension = @".xls";
-            string nombre = fechaHora.ToString().Replace(" ", "-").Replace(":", "-").Replace("/", "-");
-            string carpetaContenedora = @"\Seniales\";
-            string ubicacionArchivo = carpetaContenedora + nombre + extension;
-
-            libros_trabajo.SaveAs(Directory.GetCurrentDirectory() + ubicacionArchivo, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
-            libros_trabajo.Close(true);
-            aplicacion.Quit();
-        }
 
 
         /********************************************************************************************************************************************/
@@ -949,6 +883,8 @@ namespace AplicacionPaper
         // Funcion para guardar los datos en la base de datos luego de terminar correctamente el estudio
         private void guardarDatos()
         {
+            string nombreArchivoExcel = fechaHora.ToString().Replace(" ", "-").Replace(":", "-").Replace("/", "-");
+
             // Comprobacion de que este abierto el lazo con la base de datos
             if (conexionBaseDatos.State != ConnectionState.Open)
                 conexionBaseDatos.Open();
@@ -979,7 +915,7 @@ namespace AplicacionPaper
             comandoBaseDatos.Parameters.AddWithValue("TamanioLetra", tamanioLetra);
             comandoBaseDatos.Parameters.AddWithValue("TamanioPantalla", tamanioPantalla);
             comandoBaseDatos.Parameters.AddWithValue("CantidadDeFilas", filasTotales);
-            comandoBaseDatos.Parameters.AddWithValue("Archivo", nombreArchivoCompleto);
+            comandoBaseDatos.Parameters.AddWithValue("Archivo", nombreArchivoExcel);
             comandoBaseDatos.Parameters.AddWithValue("Secuencia", secuenciaElegida);
 
             // Ejecucion de la orden para ingresar los nuevos datos a la base
@@ -989,10 +925,18 @@ namespace AplicacionPaper
 
 
 
+        /********************************************************************************************************************************************/
+        /********************************************************************************************************************************************/
+        /*                                                               EXCEL                                                                      */
+        /********************************************************************************************************************************************/
+        /********************************************************************************************************************************************/
 
-        // Funcion para guardar los datos en un archivo de excel
-        private void GuardarDatosExcel()
+        private void guardarDatosEnExcel()
         {
+            MostrarPorcentaje formularioMostrarPorcentaje = new MostrarPorcentaje();
+            formularioMostrarPorcentaje.Show();
+            formularioMostrarPorcentaje.actualizarPorcentaje(0);
+
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
             Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
@@ -1000,31 +944,67 @@ namespace AplicacionPaper
             libros_trabajo = aplicacion.Workbooks.Add();
             hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
 
-            //Recorremos el DataGridView rellenando la hoja de trabajo
-            for (int filaExcel = 0; filaExcel < maximoDeTramasRecibidas; filaExcel++)
+            // Primero se escriben los encabezados
+            hoja_trabajo.Cells[1, 1] = "Canal 0";
+            hoja_trabajo.Cells[1, 2] = "Canal 1";
+            hoja_trabajo.Cells[1, 3] = "Canal 2";
+            hoja_trabajo.Cells[1, 4] = "Canal 3";
+            hoja_trabajo.Cells[1, 5] = "Canal 4";
+            hoja_trabajo.Cells[1, 6] = "Canal 5";
+            hoja_trabajo.Cells[1, 7] = "Canal 6";
+            hoja_trabajo.Cells[1, 8] = "Canal 7";
+            hoja_trabajo.Cells[1, 9] = "Markers";
+
+            // Luego se escriben los datos
+            for (int filaExcel = 0; filaExcel < DatosDelCasco.LongitudDeLaLista(); filaExcel++)
             {
-                hoja_trabajo.Cells[filaExcel + 1, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 1, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
+                hoja_trabajo.Cells[filaExcel + 2, 9] = markersPosiciones[filaExcel];
+                formularioMostrarPorcentaje.actualizarPorcentaje( (int) ( 100 * (float) filaExcel / DatosDelCasco.LongitudDeLaLista() ) );
             }
+
+            // Finalmente se agregan detalles de configuración
+            hoja_trabajo.Cells[1, 11] = "Apellido";
+            hoja_trabajo.Cells[1, 12] = apellido;
+            hoja_trabajo.Cells[2, 11] = "Edad";
+            hoja_trabajo.Cells[2, 12] = edad;
+            hoja_trabajo.Cells[3, 11] = "Opcion elegida";
+            hoja_trabajo.Cells[3, 12] = textoOpcionElegida;
+            hoja_trabajo.Cells[4, 11] = "Opcion resultante";
+            hoja_trabajo.Cells[4, 12] = decisionTomada[0];
+            hoja_trabajo.Cells[5, 11] = "Tiempo de descanso";
+            hoja_trabajo.Cells[5, 12] = tiempoDeDescanso;
+            hoja_trabajo.Cells[6, 11] = "Tiempo de excitacion";
+            hoja_trabajo.Cells[6, 12] = tiempoDeExcitacion;
+            hoja_trabajo.Cells[7, 11] = "Tiempo del estudio";
+            hoja_trabajo.Cells[7, 12] = tiempoEstudioSegundos;
 
             // Definiciones para hacer más legible el nombre del archivo en excel
             string extension = @".xls";
-            string nombre = fechaHora.ToString().Replace(" ", "-").Replace(":","-").Replace("/","-");
+            string nombre = fechaHora.ToString().Replace(" ", "-").Replace(":", "-").Replace("/", "-");
             string carpetaContenedora = @"\Seniales\";
             string ubicacionArchivo = carpetaContenedora + nombre + extension;
 
-            nombreArchivoCompleto = nombre;
-
-            libros_trabajo.SaveAs( Directory.GetCurrentDirectory() + ubicacionArchivo, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
+            libros_trabajo.SaveAs(Directory.GetCurrentDirectory() + ubicacionArchivo, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
             libros_trabajo.Close(true);
             aplicacion.Quit();
+
+            formularioMostrarPorcentaje.Close();
         }
+
+
+
+
+
+
+
 
     }
 }

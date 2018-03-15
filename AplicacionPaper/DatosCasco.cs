@@ -83,6 +83,11 @@ namespace AplicacionPaper
         private int CantidadDeTramasFalladas;
         private int CantidadDeTramasValidas;
 
+        // Constante de conversión de cuentas a uV
+        private const double ConstanteDeEscala = 0.02235;        // Si no se modifica nada, por defecto esta es la constante de conversión.
+                                                                 // La fórmula es => K = ( 4.5 volts / ganacia ) / ( 2^23 - 1 );
+                                                                 // Por default, la ganancia del conversor es de 24
+
 
 
         /********************************************************************************************************************************************/
@@ -211,7 +216,21 @@ namespace AplicacionPaper
             Auxiliar = ParteBaja;
             Dato += Auxiliar;
 
-            return( Dato );
+            if ((Dato & 0x00800000) > 0)
+            {
+                Auxiliar = 0xFF << 24;
+                Dato = Dato | Auxiliar;
+            }
+
+            else
+            {
+                Auxiliar = Convert.ToInt32(0x00FFFFFF);
+                Dato = Dato & Auxiliar;
+            }
+
+            Dato = Convert.ToInt32(Dato * ConstanteDeEscala);
+
+            return (Dato);
         }
 
     }

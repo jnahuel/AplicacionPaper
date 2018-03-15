@@ -83,3 +83,4 @@ C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\De
 C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
 C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
 C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarPorcentaje.resources
