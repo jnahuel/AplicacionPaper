@@ -823,7 +823,7 @@ namespace AplicacionPaper
                 funcionMatlab.Execute(@"cd " + Directory.GetCurrentDirectory() + @"\MatlabScripts\SeisOpciones");
 
             object resultadoMatlab = null;
-            funcionMatlab.Feval("script_Principal", 1, out resultadoMatlab, DatosDelCasco.LeerCanal(7), markersPosiciones);
+            funcionMatlab.Feval("script_Principal", 1, out resultadoMatlab, DatosDelCasco.LeerCanal(6), markersPosiciones);
             decisionTomada = resultadoMatlab as object[];
 
             // Se muestra un mensaje diciendo que el estudio termino correctamente
@@ -945,25 +945,19 @@ namespace AplicacionPaper
             hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
 
             // Primero se escriben los encabezados
-            hoja_trabajo.Cells[1, 1] = "Canal 0";
-            hoja_trabajo.Cells[1, 2] = "Canal 1";
-            hoja_trabajo.Cells[1, 3] = "Canal 2";
-            hoja_trabajo.Cells[1, 4] = "Canal 3";
-            hoja_trabajo.Cells[1, 5] = "Canal 4";
-            hoja_trabajo.Cells[1, 6] = "Canal 5";
-            hoja_trabajo.Cells[1, 7] = "Canal 6";
-            hoja_trabajo.Cells[1, 8] = "Canal 7";
+            hoja_trabajo.Cells[1, 1] = "Canal 1 - Fp1";
+            hoja_trabajo.Cells[1, 2] = "Canal 2 - Fp2";
+            hoja_trabajo.Cells[1, 3] = "Canal 3 - C3";
+            hoja_trabajo.Cells[1, 4] = "Canal 4 - C4";
+            hoja_trabajo.Cells[1, 5] = "Canal 5 - P7";
+            hoja_trabajo.Cells[1, 6] = "Canal 6 - P8";
+            hoja_trabajo.Cells[1, 7] = "Canal 7 - O1";
+            hoja_trabajo.Cells[1, 8] = "Canal 8 - O2";
             hoja_trabajo.Cells[1, 9] = "Markers";
 
             // Luego se escriben los datos
             for (int filaExcel = 0; filaExcel < DatosDelCasco.LongitudDeLaLista(); filaExcel++)
             {
-                hoja_trabajo.Cells[filaExcel + 2, 1] = DatosDelCasco.LeerDatosDelCanal(0, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 2] = DatosDelCasco.LeerDatosDelCanal(1, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 3] = DatosDelCasco.LeerDatosDelCanal(2, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 4] = DatosDelCasco.LeerDatosDelCanal(3, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 5] = DatosDelCasco.LeerDatosDelCanal(4, filaExcel);
-                hoja_trabajo.Cells[filaExcel + 2, 6] = DatosDelCasco.LeerDatosDelCanal(5, filaExcel);
                 hoja_trabajo.Cells[filaExcel + 2, 7] = DatosDelCasco.LeerDatosDelCanal(6, filaExcel);
                 hoja_trabajo.Cells[filaExcel + 2, 8] = DatosDelCasco.LeerDatosDelCanal(7, filaExcel);
                 hoja_trabajo.Cells[filaExcel + 2, 9] = markersPosiciones[filaExcel];
