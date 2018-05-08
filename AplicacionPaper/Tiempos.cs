@@ -49,7 +49,7 @@ namespace AplicacionPaper
             label1.Location = new Point( 15, 15 );
             label2.Location = new Point( 15, 45 );
             label3.Location = new Point( 15, 75 );
-            tbxTiempoDescanso.Location = new Point( 160, 10 );
+            tbxTiempoDescanso.Location = new Point(160, 10);
             tbxTiempoExcitacion.Location = new Point( 160, 40 );
             tbxTiempoEstudio.Location = new Point( 160, 70 );
 

@@ -69,7 +69,6 @@ namespace AplicacionPaper
         static Thread threadGrafico;
         static Thread threadCuentaRegresiva;
         static Thread threadLecturaPuertoSerie;
-        static Thread threadGuardarExcel;
         static bool threadsIniciados = false;
         static bool finalizarThreadLecturaPuertoSerie = false;
 
@@ -77,8 +76,8 @@ namespace AplicacionPaper
         string[] tamaniosDeLetra = { "Muy grande", "Grande", "Media", "Chica", "Muy chica" };
 
         // Variables para almacenar los tiempos del estudio
-        static int tiempoDeDescanso = 500;         // En mSeg
-        static int tiempoDeExcitacion = 500;       // En mSeg
+        static int tiempoDeDescanso = 800;         // En mSeg
+        static int tiempoDeExcitacion = 200;       // En mSeg
         static int tiempoEstudioSegundos = 10;        // En Seg
         static int tiempoEstudioMiliSegundos = tiempoEstudioSegundos * 1000;
         static int maximoDeTramasRecibidas = tramasPorSegundo * tiempoEstudioSegundos;
@@ -121,8 +120,6 @@ namespace AplicacionPaper
         List<int> secuenciaFinal = new List<int>();
         bool desordenada;
         bool rueda;
-
-        string nombreArchivoCompleto;
 
 
 
@@ -171,6 +168,8 @@ namespace AplicacionPaper
                 puertoSerie.PortName = formularioConfiguracionPuertoSerie.nombreDelPuerto;
                 accionesToolStripMenuItem.Enabled = true;
                 comunicacionToolStripMenuItem.Enabled = false;
+                iniciarToolStripMenuItem.Enabled = true;
+                detenerToolStripMenuItem.Enabled = false;
                 reiniciarToolStripMenuItem.Enabled = true;
             }
         }
@@ -372,6 +371,7 @@ namespace AplicacionPaper
                 // Se habilita el botón para detener el estudio en curso y se quita la posibilidad de iniciar uno nuevo
                 detenerToolStripMenuItem.Enabled = true;
                 iniciarToolStripMenuItem.Enabled = false;
+                reiniciarToolStripMenuItem.Enabled = false;
 
                 // A su vez, mientras esté en curso, no pueden modificar los parametros
                 configuracionToolStripMenuItem.Enabled = false;
@@ -395,10 +395,7 @@ namespace AplicacionPaper
                 threadLecturaPuertoSerie.Start();
                 threadGrafico.Start();
 
-                // Se genera una demora ficticia sólo para sincronizar el inicio de los threads con el timer principal
-                Thread.Sleep(0);
                 threadsIniciados = true;
-//                timerTiempoEstudio.Start();
             }
         }
 
@@ -420,6 +417,7 @@ namespace AplicacionPaper
             // Detenido el estudio, se puede iniciar otro junto con la configuración
             iniciarToolStripMenuItem.Enabled = true;
             detenerToolStripMenuItem.Enabled = false;
+            reiniciarToolStripMenuItem.Enabled = true;
             configuracionToolStripMenuItem.Enabled = true;
 
             // Por último, se repasan todos los botones para que ninguno quede en estado de excitación
@@ -441,7 +439,7 @@ namespace AplicacionPaper
             accionesToolStripMenuItem.Enabled = false;
 
             // Se cierra el puerto serie
-            try { puertoSerie.Close(); }
+            try { puertoSerie.Close(); redimensionarBufferSerie = true; }
             catch (Exception) { }
         }
 
@@ -651,6 +649,9 @@ namespace AplicacionPaper
 
             timerTiempoEstudio.Start();
 
+            // Se genera una demora ficticia sólo para sincronizar el inicio de los threads con el timer principal
+            Thread.Sleep(0);
+
             // Luego de generar todo el vector de secuencias, se procede a iluminar los símbolos en dicho orden
             while (true)        // Bloque perpetuo
             {
@@ -688,6 +689,9 @@ namespace AplicacionPaper
                         }   // Fin del "if( Se encontró un boton )"
                     }   // Fin del "foreach( Recorrer todos los controlas gráficos )"
                 }   // Fin del "for( Recorrer la secuencia )"
+
+                Thread.Sleep( 10000 );
+
             }   // Fin del "while( true )". Nunca sale de este bucle
 
         }
@@ -779,6 +783,15 @@ namespace AplicacionPaper
                 reiniciarToolStripMenuItem.Enabled = true;
                 configuracionToolStripMenuItem.Enabled = true;
 
+                // Se dejan todos los botones en estado de descanso
+                foreach (Control boton in Controls)
+                {
+                    if (boton is Button)
+                    {
+                        boton.ForeColor = Color.FromName(colorDeLetraNormal);
+                    }
+                }
+
                 // Se indica al usuario la condicion para que reinicie el estudio
                 MessageBox.Show("Se perdio la comunicacion con el casco. Por favor, reinicie el puerto");
             }
@@ -805,6 +818,7 @@ namespace AplicacionPaper
             // Tiene que dejar las condiciones necesarias para iniciar un nuevo estudio
             iniciarToolStripMenuItem.Enabled = true;
             detenerToolStripMenuItem.Enabled = false;
+            reiniciarToolStripMenuItem.Enabled = true;
             configuracionToolStripMenuItem.Enabled = true;
 
             // Se reestablecen las opciones para modificar el tamaño de la pantalla
