@@ -26,7 +26,6 @@ D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Form1.r
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarInformacionPersonal.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Properties.Resources.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.PuertoSerie.resources
-D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Tiempos.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.TomarDatosPersonales.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
@@ -84,3 +83,5 @@ C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\De
 C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.Visual.resources
 C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.csproj.GenerateResource.Cache
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarPorcentaje.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.OpcionesSecuenciales.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.OpcionesFrecuenciales.resources

@@ -28,24 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.configuracionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.comunicacionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tiemposDelEstudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.configuracionVisualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.opcionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.subMenuDosOpciones = new System.Windows.Forms.ToolStripMenuItem();
-            this.subMenuSeisOpciones = new System.Windows.Forms.ToolStripMenuItem();
-            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ruedaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aleatorioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datosPersonalesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iniciarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detenerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reiniciarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerTiempoEstudio = new System.Windows.Forms.Timer(this.components);
+            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frecuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,9 +58,8 @@
             // 
             this.configuracionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.comunicacionToolStripMenuItem,
-            this.tiemposDelEstudioToolStripMenuItem,
+            this.secuencialToolStripMenuItem1,
             this.configuracionVisualToolStripMenuItem,
-            this.opcionesToolStripMenuItem,
             this.datosPersonalesToolStripMenuItem});
             this.configuracionToolStripMenuItem.Name = "configuracionToolStripMenuItem";
             this.configuracionToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
@@ -75,76 +68,30 @@
             // comunicacionToolStripMenuItem
             // 
             this.comunicacionToolStripMenuItem.Name = "comunicacionToolStripMenuItem";
-            this.comunicacionToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.comunicacionToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.comunicacionToolStripMenuItem.Text = "Comunicación";
             this.comunicacionToolStripMenuItem.Click += new System.EventHandler(this.comunicacionToolStripMenuItem_Click);
             // 
-            // tiemposDelEstudioToolStripMenuItem
+            // secuencialToolStripMenuItem1
             // 
-            this.tiemposDelEstudioToolStripMenuItem.Name = "tiemposDelEstudioToolStripMenuItem";
-            this.tiemposDelEstudioToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.tiemposDelEstudioToolStripMenuItem.Text = "Tiempos";
-            this.tiemposDelEstudioToolStripMenuItem.Click += new System.EventHandler(this.tiemposDelEstudioToolStripMenuItem_Click);
+            this.secuencialToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.secuencialToolStripMenuItem,
+            this.frecuencialToolStripMenuItem});
+            this.secuencialToolStripMenuItem1.Name = "secuencialToolStripMenuItem1";
+            this.secuencialToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
+            this.secuencialToolStripMenuItem1.Text = "Tipo de estudio";
             // 
             // configuracionVisualToolStripMenuItem
             // 
             this.configuracionVisualToolStripMenuItem.Name = "configuracionVisualToolStripMenuItem";
-            this.configuracionVisualToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.configuracionVisualToolStripMenuItem.Text = "Opciones visuales";
+            this.configuracionVisualToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.configuracionVisualToolStripMenuItem.Text = "Visual";
             this.configuracionVisualToolStripMenuItem.Click += new System.EventHandler(this.menuConfiguracionVisual_Click);
-            // 
-            // opcionesToolStripMenuItem
-            // 
-            this.opcionesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.subMenuDosOpciones,
-            this.subMenuSeisOpciones});
-            this.opcionesToolStripMenuItem.Name = "opcionesToolStripMenuItem";
-            this.opcionesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.opcionesToolStripMenuItem.Text = "Símbolos";
-            // 
-            // subMenuDosOpciones
-            // 
-            this.subMenuDosOpciones.Name = "subMenuDosOpciones";
-            this.subMenuDosOpciones.Size = new System.Drawing.Size(152, 22);
-            this.subMenuDosOpciones.Text = "2";
-            this.subMenuDosOpciones.Click += new System.EventHandler(this.subMenuDosOpciones_Click);
-            // 
-            // subMenuSeisOpciones
-            // 
-            this.subMenuSeisOpciones.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.secuencialToolStripMenuItem,
-            this.ruedaToolStripMenuItem,
-            this.aleatorioToolStripMenuItem});
-            this.subMenuSeisOpciones.Name = "subMenuSeisOpciones";
-            this.subMenuSeisOpciones.Size = new System.Drawing.Size(152, 22);
-            this.subMenuSeisOpciones.Text = "6";
-            this.subMenuSeisOpciones.Click += new System.EventHandler(this.subMenuSeisOpciones_Click);
-            // 
-            // secuencialToolStripMenuItem
-            // 
-            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
-            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.secuencialToolStripMenuItem.Text = "Secuencial";
-            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.subMenuSeisOpciones_Click);
-            // 
-            // ruedaToolStripMenuItem
-            // 
-            this.ruedaToolStripMenuItem.Name = "ruedaToolStripMenuItem";
-            this.ruedaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ruedaToolStripMenuItem.Text = "Rueda";
-            this.ruedaToolStripMenuItem.Click += new System.EventHandler(this.ruedaToolStripMenuItem_Click);
-            // 
-            // aleatorioToolStripMenuItem
-            // 
-            this.aleatorioToolStripMenuItem.Name = "aleatorioToolStripMenuItem";
-            this.aleatorioToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aleatorioToolStripMenuItem.Text = "Aleatorio";
-            this.aleatorioToolStripMenuItem.Click += new System.EventHandler(this.aleatorioToolStripMenuItem_Click);
             // 
             // datosPersonalesToolStripMenuItem
             // 
             this.datosPersonalesToolStripMenuItem.Name = "datosPersonalesToolStripMenuItem";
-            this.datosPersonalesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.datosPersonalesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.datosPersonalesToolStripMenuItem.Text = "Datos personales";
             this.datosPersonalesToolStripMenuItem.Click += new System.EventHandler(this.datosPersonalesToolStripMenuItem_Click);
             // 
@@ -179,10 +126,19 @@
             this.reiniciarToolStripMenuItem.Text = "Reiniciar";
             this.reiniciarToolStripMenuItem.Click += new System.EventHandler(this.reiniciarToolStripMenuItem_Click);
             // 
-            // timerTiempoEstudio
+            // secuencialToolStripMenuItem
             // 
-            this.timerTiempoEstudio.Interval = 10000;
-            this.timerTiempoEstudio.Tick += new System.EventHandler(this.timerTiempoEstudio_Tick);
+            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
+            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.secuencialToolStripMenuItem.Text = "Secuencial";
+            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.secuencialToolStripMenuItem_Click);
+            // 
+            // frecuencialToolStripMenuItem
+            // 
+            this.frecuencialToolStripMenuItem.Name = "frecuencialToolStripMenuItem";
+            this.frecuencialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.frecuencialToolStripMenuItem.Text = "Frecuencial";
+            this.frecuencialToolStripMenuItem.Click += new System.EventHandler(this.frecuencialToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -208,20 +164,15 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem configuracionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comunicacionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tiemposDelEstudioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configuracionVisualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accionesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iniciarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detenerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reiniciarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem opcionesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem subMenuDosOpciones;
-        private System.Windows.Forms.ToolStripMenuItem subMenuSeisOpciones;
         private System.Windows.Forms.ToolStripMenuItem datosPersonalesToolStripMenuItem;
-        private System.Windows.Forms.Timer timerTiempoEstudio;
+        private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ruedaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aleatorioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem frecuencialToolStripMenuItem;
     }
 }
 

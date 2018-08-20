@@ -39,7 +39,7 @@
             this.tbxApellido = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tbxTamanioPantalla = new System.Windows.Forms.TextBox();
+            this.tbxSecuencia = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tbxFilas = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -56,14 +56,15 @@
             this.tbxTiempoTotal = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tbxTiempoExcitacion = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.tbxTiempoDescanso = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblDescanso = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cmbOpciones = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.cmbFrecuencias = new System.Windows.Forms.ComboBox();
+            this.lblExcitacion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -172,7 +173,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.tbxTamanioPantalla);
+            this.groupBox2.Controls.Add(this.cmbFrecuencias);
+            this.groupBox2.Controls.Add(this.tbxSecuencia);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.tbxFilas);
             this.groupBox2.Controls.Add(this.label13);
@@ -189,9 +191,9 @@
             this.groupBox2.Controls.Add(this.tbxTiempoTotal);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.tbxTiempoExcitacion);
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.lblExcitacion);
             this.groupBox2.Controls.Add(this.tbxTiempoDescanso);
-            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.lblDescanso);
             this.groupBox2.Location = new System.Drawing.Point(10, 110);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(420, 184);
@@ -199,22 +201,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Opciones de configuración";
             // 
-            // tbxTamanioPantalla
+            // tbxSecuencia
             // 
-            this.tbxTamanioPantalla.Location = new System.Drawing.Point(125, 142);
-            this.tbxTamanioPantalla.Name = "tbxTamanioPantalla";
-            this.tbxTamanioPantalla.ReadOnly = true;
-            this.tbxTamanioPantalla.Size = new System.Drawing.Size(70, 20);
-            this.tbxTamanioPantalla.TabIndex = 25;
+            this.tbxSecuencia.Location = new System.Drawing.Point(125, 142);
+            this.tbxSecuencia.Name = "tbxSecuencia";
+            this.tbxSecuencia.ReadOnly = true;
+            this.tbxSecuencia.Size = new System.Drawing.Size(70, 20);
+            this.tbxSecuencia.TabIndex = 25;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(10, 145);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(112, 13);
+            this.label14.Size = new System.Drawing.Size(95, 13);
             this.label14.TabIndex = 24;
-            this.label14.Text = "Tamaño de la pantalla";
+            this.label14.Text = "Tipo de secuencia";
             // 
             // tbxFilas
             // 
@@ -344,15 +346,6 @@
             this.tbxTiempoExcitacion.Size = new System.Drawing.Size(50, 20);
             this.tbxTiempoExcitacion.TabIndex = 9;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(225, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Tiempo de excitación [mS]";
-            // 
             // tbxTiempoDescanso
             // 
             this.tbxTiempoDescanso.Location = new System.Drawing.Point(145, 22);
@@ -361,14 +354,14 @@
             this.tbxTiempoDescanso.Size = new System.Drawing.Size(50, 20);
             this.tbxTiempoDescanso.TabIndex = 7;
             // 
-            // label5
+            // lblDescanso
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(130, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Tiempo de descanso [mS]";
+            this.lblDescanso.AutoSize = true;
+            this.lblDescanso.Location = new System.Drawing.Point(10, 25);
+            this.lblDescanso.Name = "lblDescanso";
+            this.lblDescanso.Size = new System.Drawing.Size(102, 13);
+            this.lblDescanso.TabIndex = 6;
+            this.lblDescanso.Text = "Lista de frecuencias";
             // 
             // btnAceptar
             // 
@@ -420,6 +413,24 @@
             this.label15.TabIndex = 5;
             this.label15.Text = "Elección";
             // 
+            // cmbFrecuencias
+            // 
+            this.cmbFrecuencias.FormattingEnabled = true;
+            this.cmbFrecuencias.Location = new System.Drawing.Point(125, 22);
+            this.cmbFrecuencias.Name = "cmbFrecuencias";
+            this.cmbFrecuencias.Size = new System.Drawing.Size(70, 21);
+            this.cmbFrecuencias.TabIndex = 26;
+            this.cmbFrecuencias.SelectedIndexChanged += new System.EventHandler(this.cmbFrecuencias_SelectedIndexChanged);
+            // 
+            // lblExcitacion
+            // 
+            this.lblExcitacion.AutoSize = true;
+            this.lblExcitacion.Location = new System.Drawing.Point(225, 25);
+            this.lblExcitacion.Name = "lblExcitacion";
+            this.lblExcitacion.Size = new System.Drawing.Size(132, 13);
+            this.lblExcitacion.TabIndex = 8;
+            this.lblExcitacion.Text = "Tiempo de excitación [mS]";
+            // 
             // MostrarInformacionPersonal
             // 
             this.AcceptButton = this.btnAceptar;
@@ -470,17 +481,18 @@
         private System.Windows.Forms.TextBox tbxTiempoTotal;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbxTiempoExcitacion;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbxTiempoDescanso;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblDescanso;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.TextBox tbxTamanioPantalla;
+        private System.Windows.Forms.TextBox tbxSecuencia;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox tbxFilas;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox cmbOpciones;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox cmbFrecuencias;
+        private System.Windows.Forms.Label lblExcitacion;
     }
 }
