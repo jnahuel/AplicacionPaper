@@ -39,6 +39,7 @@
             this.tbxApellido = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbFrecuencias = new System.Windows.Forms.ComboBox();
             this.tbxSecuencia = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tbxFilas = new System.Windows.Forms.TextBox();
@@ -56,6 +57,7 @@
             this.tbxTiempoTotal = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tbxTiempoExcitacion = new System.Windows.Forms.TextBox();
+            this.lblExcitacion = new System.Windows.Forms.Label();
             this.tbxTiempoDescanso = new System.Windows.Forms.TextBox();
             this.lblDescanso = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
@@ -63,8 +65,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cmbOpciones = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.cmbFrecuencias = new System.Windows.Forms.ComboBox();
-            this.lblExcitacion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -200,6 +200,15 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Opciones de configuración";
+            // 
+            // cmbFrecuencias
+            // 
+            this.cmbFrecuencias.FormattingEnabled = true;
+            this.cmbFrecuencias.Location = new System.Drawing.Point(125, 22);
+            this.cmbFrecuencias.Name = "cmbFrecuencias";
+            this.cmbFrecuencias.Size = new System.Drawing.Size(70, 21);
+            this.cmbFrecuencias.TabIndex = 26;
+            this.cmbFrecuencias.SelectedIndexChanged += new System.EventHandler(this.cmbFrecuencias_SelectedIndexChanged);
             // 
             // tbxSecuencia
             // 
@@ -346,6 +355,15 @@
             this.tbxTiempoExcitacion.Size = new System.Drawing.Size(50, 20);
             this.tbxTiempoExcitacion.TabIndex = 9;
             // 
+            // lblExcitacion
+            // 
+            this.lblExcitacion.AutoSize = true;
+            this.lblExcitacion.Location = new System.Drawing.Point(225, 25);
+            this.lblExcitacion.Name = "lblExcitacion";
+            this.lblExcitacion.Size = new System.Drawing.Size(132, 13);
+            this.lblExcitacion.TabIndex = 8;
+            this.lblExcitacion.Text = "Tiempo de excitación [mS]";
+            // 
             // tbxTiempoDescanso
             // 
             this.tbxTiempoDescanso.Location = new System.Drawing.Point(145, 22);
@@ -413,24 +431,6 @@
             this.label15.TabIndex = 5;
             this.label15.Text = "Elección";
             // 
-            // cmbFrecuencias
-            // 
-            this.cmbFrecuencias.FormattingEnabled = true;
-            this.cmbFrecuencias.Location = new System.Drawing.Point(125, 22);
-            this.cmbFrecuencias.Name = "cmbFrecuencias";
-            this.cmbFrecuencias.Size = new System.Drawing.Size(70, 21);
-            this.cmbFrecuencias.TabIndex = 26;
-            this.cmbFrecuencias.SelectedIndexChanged += new System.EventHandler(this.cmbFrecuencias_SelectedIndexChanged);
-            // 
-            // lblExcitacion
-            // 
-            this.lblExcitacion.AutoSize = true;
-            this.lblExcitacion.Location = new System.Drawing.Point(225, 25);
-            this.lblExcitacion.Name = "lblExcitacion";
-            this.lblExcitacion.Size = new System.Drawing.Size(132, 13);
-            this.lblExcitacion.TabIndex = 8;
-            this.lblExcitacion.Text = "Tiempo de excitación [mS]";
-            // 
             // MostrarInformacionPersonal
             // 
             this.AcceptButton = this.btnAceptar;
@@ -444,6 +444,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MostrarInformacionPersonal";
+            this.ShowIcon = false;
             this.Text = "Parámetros actuales";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -170,6 +170,7 @@
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.panel1);
             this.Name = "TomarDatosPersonales";
+            this.ShowIcon = false;
             this.Text = "Datos personales";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

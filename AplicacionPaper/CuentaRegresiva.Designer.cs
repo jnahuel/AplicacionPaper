@@ -56,6 +56,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CuentaRegresiva";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cuenta regresiva";
             this.ResumeLayout(false);

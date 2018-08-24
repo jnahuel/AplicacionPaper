@@ -70,6 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfiguracionEstimulacion.cs" />
+    <Compile Include="ConfigurarHardware.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurarHardware.Designer.cs">
+      <DependentUpon>ConfigurarHardware.cs</DependentUpon>
+    </Compile>
     <Compile Include="CuentaRegresiva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +135,9 @@
     <Compile Include="Visual.designer.cs">
       <DependentUpon>Visual.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ConfigurarHardware.resx">
+      <DependentUpon>ConfigurarHardware.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CuentaRegresiva.resx">
       <DependentUpon>CuentaRegresiva.cs</DependentUpon>
     </EmbeddedResource>

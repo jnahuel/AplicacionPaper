@@ -8,7 +8,7 @@ using System.IO;
 
 namespace AplicacionPaper
 {
-    class DatosCasco
+    public class DatosCasco
     {
         /********************************************************************************************************************************************/
         /********************************************************************************************************************************************/
@@ -91,6 +91,10 @@ namespace AplicacionPaper
         /********************************************************************************************************************************************/
 
 
+        // Total de canales
+        public const int TOTAL_DE_CANALES = 8;
+
+
         // Nombres de los canales en funcion del contacto que representan
         public const int CANAL_FP1 = CANAL_1;
         public const int CANAL_FP2 = CANAL_2;
@@ -133,8 +137,8 @@ namespace AplicacionPaper
         /* Comando: CONFIGURAR CANAL */
 
         // POWER_DOWN: Definicion del estado prendido o apagado
-        public const int CANAL_PRENDIDO = 0;            // Opcion tomada por default en el inicio del casco - Interna de su micro
-        public const int CANAL_APAGADO = 1;
+        public const bool CANAL_PRENDIDO = true;            // Opcion tomada por default en el inicio del casco - Interna de su micro
+        public const bool CANAL_APAGADO = false;
 
         // GAIN_SET: Definicion de las posibles ganancias para el amplificador del conversor
         public const int GANANCIA_1 = 0;
@@ -156,16 +160,16 @@ namespace AplicacionPaper
         public const int ADS_INPUT_BIAS_DRN = 7;
 
         // BIAS_SET: Definicion de la opcion para incluir o no al canal en la generacion de la senial de BIAS
-        public const int BIAS_REMOVE = 0;
-        public const int BIAS_INCLUDE = 1;              // Opcion tomada por default en el inicio del casco - Interna de su micro
+        public const bool BIAS_REMOVE = false;
+        public const bool BIAS_INCLUDE = true;              // Opcion tomada por default en el inicio del casco - Interna de su micro
 
         // SRB2_SET: Definicion de la opcion para conectar la entrada P del canal al pin SRB2
-        public const int SRB2_DISCONNECT = 0;
-        public const int SRB2_CONNECT = 1;              // Opcion tomada por default en el inicio del casco - Interna de su micro
+        public const bool SRB2_DISCONNECT = false;
+        public const bool SRB2_CONNECT = true;              // Opcion tomada por default en el inicio del casco - Interna de su micro
 
         // SRB1_SET: Definicion de la opcion para desconectar todas las entradas N de los canales al pin SBR1
-        public const int SRB1_DISCONNECT_ALL = 0;       // Opcion tomada por default en el inicio del casco - Interna de su micro
-        public const int SRB1_CONNECT_ALL = 1;
+        public const bool SRB1_DISCONNECT_ALL = false;       // Opcion tomada por default en el inicio del casco - Interna de su micro
+        public const bool SRB1_CONNECT_ALL = true;
 
 
         /* Comando: MEDIR IMPEDANCIA */
@@ -177,6 +181,18 @@ namespace AplicacionPaper
         // NCHAN: Se usa para indicar si se inyecta la senial de prueba en la entrada N del canal
         public const bool NO_MEDIR_IMPEDANCIA_N = false;        // Opcion tomada por default en el inicio del casco - Interna de su micro
         public const bool SI_MEDIR_IMPEDANCIA_N = true;
+
+
+        /* Opciones tomadas por default para hacer mas legible el codigo */
+        public const bool OPCION_POR_DEFAULT_ENCENDIDO = CANAL_PRENDIDO;
+        public const Int32 OPCION_POR_DEFAULT_GANANCIA = GANANCIA_24;
+        public const Int32 OPCION_POR_DEFAULT_TIPO_DE_ENTRADA = ADS_INPUT_NORMAL;
+        public const bool OPCION_POR_DEFAULT_BIAS = BIAS_INCLUDE;
+        public const bool OPCION_POR_DEFAULT_SRB2 = SRB2_CONNECT;
+        public const bool OPCION_POR_DEFAULT_SRB1 = SRB1_DISCONNECT_ALL;
+        public const bool OPCION_POR_DEFAULT_MEDIENDO_IMPEDANCIA = false;
+        public const bool OPCION_POR_DEFAULT_MEDIR_IMPEDANCIA_P = NO_MEDIR_IMPEDANCIA_P;
+        public const bool OPCION_POR_DEFAULT_MEDIR_IMPEDANCIA_N = NO_MEDIR_IMPEDANCIA_N;
 
 
 
@@ -211,7 +227,7 @@ namespace AplicacionPaper
 
 
         /* Comando: ACTIVAR SENIAL DE CONTROL */
-
+        
         private const string CARACTER_CONNECT_TO_INTERNAL_GND = "0";
         private const string CARACTER_CONNECT_TO_TEST_SIGNAL_1X_SLOW_PULSE = "-";
         private const string CARACTER_CONNECT_TO_TEST_SIGNAL_1X_FAST_PULSE = "=";
@@ -300,6 +316,17 @@ namespace AplicacionPaper
         private List<Int32> CanalSiete;
         private List<Int32> CanalOcho;
 
+        // Listas para almacenar la configuracion de los canales
+        private List<Int32> configuracionGanancia;
+        private List<Int32> configuracionTipoDeEntrada;
+        private List<bool> configuracionEncendido;
+        private List<bool> configuracionBIAS;
+        private List<bool> configuracionSRB1;
+        private List<bool> configuracionSRB2;
+        private List<bool> configuracionImpendanciaMidiendo;
+        private List<bool> configuracionImpendanciaContactoP;
+        private List<bool> configuracionImpendanciaContactoN;
+
         // Lista auxiliar para almacenar el contador de tramas
         private List<Int32> NumerosDeTramas;
 
@@ -312,7 +339,8 @@ namespace AplicacionPaper
 
         // Constante de conversión de cuentas a uV
         //private const double ConstanteDeEscala = 0.00093215;        // Ganancia unitaria
-        private const double ConstanteDeEscala = 0.02235;        // Si no se modifica nada, por defecto esta es la constante de conversión.
+//        private const double ConstanteDeEscala = 0.02235;        // Si no se modifica nada, por defecto esta es la constante de conversión.
+        private double ConstanteDeEscala;
         // La fórmula es => K = ( 4.5 volts / ganacia ) / ( 2^23 - 1 );
         // Por default, la ganancia del conversor es de 24
 
@@ -376,17 +404,6 @@ namespace AplicacionPaper
         CalidadDelContacto calidadDelContactoO2;
 
 
-        // Variable para contemplar si los canales estan encendidos o no, para agilizar el manejo de las listas
-        private bool canalUnoEncendido;
-        private bool canalDosEncendido;
-        private bool canalTresEncendido;
-        private bool canalCuatroEncendido;
-        private bool canalCincoEncendido;
-        private bool canalSeisEncendido;
-        private bool canalSieteEncendido;
-        private bool canalOchoEncendido;
-
-
 
         /********************************************************************************************************************************************/
         /*                                                         CONSTRUCTOR DE LA CLASE                                                          */
@@ -396,15 +413,30 @@ namespace AplicacionPaper
         {
             BorrarDatos();
 
-            // Por default, los canales arrancan encendidos
-            canalUnoEncendido = true;
-            canalDosEncendido = true;
-            canalTresEncendido = true;
-            canalCuatroEncendido = true;
-            canalCincoEncendido = true;
-            canalSeisEncendido = true;
-            canalSieteEncendido = true;
-            canalOchoEncendido = true;
+            configuracionEncendido = new List<bool>();
+            configuracionBIAS = new List<bool>();
+            configuracionGanancia = new List<int>();
+            configuracionImpendanciaMidiendo = new List<bool>();
+            configuracionImpendanciaContactoN = new List<bool>();
+            configuracionImpendanciaContactoP = new List<bool>();
+            configuracionSRB1 = new List<bool>();
+            configuracionSRB2 = new List<bool>();
+            configuracionTipoDeEntrada = new List<int>();
+
+            // Almacenado de las configuraciones por default
+            for (int indice = 0; indice < TOTAL_DE_CANALES; indice++)
+            {
+                configuracionEncendido.Add(OPCION_POR_DEFAULT_ENCENDIDO);
+                configuracionGanancia.Add(OPCION_POR_DEFAULT_GANANCIA);
+                configuracionTipoDeEntrada.Add(OPCION_POR_DEFAULT_TIPO_DE_ENTRADA);
+                configuracionBIAS.Add(OPCION_POR_DEFAULT_BIAS);
+                configuracionSRB2.Add(OPCION_POR_DEFAULT_SRB2);
+                configuracionSRB1.Add(OPCION_POR_DEFAULT_SRB1);
+                configuracionImpendanciaMidiendo.Add(OPCION_POR_DEFAULT_MEDIENDO_IMPEDANCIA);
+                configuracionImpendanciaContactoN.Add(OPCION_POR_DEFAULT_MEDIR_IMPEDANCIA_N);
+                configuracionImpendanciaContactoP.Add(OPCION_POR_DEFAULT_MEDIR_IMPEDANCIA_P);
+            }
+
         }
 
 
@@ -731,6 +763,38 @@ namespace AplicacionPaper
 
 
         /****************************************************************/
+        /* LeerListaDelCanal                                            */
+        /*   Devuelve los datos en forma de lista                       */
+        /*                                                              */
+        /* Recibe: El numero del canal                                  */
+        /* Devuelve: Los datos en formato de lista                      */
+        /****************************************************************/
+        public List<Int32> LeerListaDelCanal(int canal)
+        {
+            switch (canal)
+            {
+                case CANAL_1:
+                    return CanalUno;
+                case CANAL_2:
+                    return CanalDos;
+                case CANAL_3:
+                    return CanalTres;
+                case CANAL_4:
+                    return CanalCuatro;
+                case CANAL_5:
+                    return CanalCinco;
+                case CANAL_6:
+                    return CanalSeis;
+                case CANAL_7:
+                    return CanalSiete;
+                default:
+                    return CanalOcho;
+            }
+        }
+
+
+
+        /****************************************************************/
         /* LeerDatoDelCanal                                             */
         /*   Lee una posicion especifica de la lista de datos           */
         /*                                                              */
@@ -912,7 +976,7 @@ namespace AplicacionPaper
         /*   True - Si se pudo enviar el comando                        */
         /*   False - Si algun parametro esta mal                        */
         /****************************************************************/
-        public bool ConfigurarCanal(int canal, int encendido, int ganancia, int entrada, int bias, int srb2, int srb1)
+        public bool ConfigurarCanal(int canal, bool encendido, int ganancia, int entrada, bool bias, bool srb2, bool srb1)
         {
             // Primero se realiza una verificacion de que todos los parametros sean correctos
 
@@ -1076,6 +1140,15 @@ namespace AplicacionPaper
                 Error = "Se excedio el tiempo maximo para el envio de los comandos - ConfigurarCanal";
                 return (false);
             }
+
+            // Luego de configurar correctamente el canal, se modifican sus valores en la lista de configuraciones
+            canal--;        // Esto es porque las listas arrancan desde cero y el numero del canal arranca en 1
+            ModificarEncendidoDelCanal(canal, encendido);
+            ModificarGananciaDelCanal(canal, ganancia);
+            ModificarTipoDeEntradaDelCanal(canal, entrada);
+            ModificarBiasDelCanal(canal, bias);
+            ModificarSRB1DelCanal(canal, srb1);
+            ModificarSRB2DelCanal(canal, srb2);
 
             if(encendido == CANAL_PRENDIDO)
                 IndicarCanalEncendido(canal);
@@ -1427,6 +1500,36 @@ namespace AplicacionPaper
 
 
 
+        // Funciones para leer los datos de las configuraciones
+        public bool LeerEncendidoDelCanal(Int32 canal)      { return (configuracionEncendido[canal]); }
+        public Int32 LeerGananciaDelCanal(Int32 canal)      { return (configuracionGanancia[canal]); }
+        public Int32 LeerTipoDeEntradaDelCanal(Int32 canal) { return (configuracionTipoDeEntrada[canal]); }
+        public bool LeerBiasDelCanal(Int32 canal)           { return (configuracionBIAS[canal]); }
+        public bool LeerSRB1DelCanal(Int32 canal)           { return (configuracionSRB1[canal]); }
+        public bool LeerSRB2DelCanal(Int32 canal)           { return (configuracionSRB2[canal]); }
+
+        // Funciones para escribir los datos de las configuraciones
+        public void ModificarEncendidoDelCanal(Int32 canal, bool encendido)     { configuracionEncendido[canal] = encendido; }
+        public void ModificarGananciaDelCanal(Int32 canal, Int32 ganancia)      { configuracionGanancia[canal] = ganancia; }
+        public void ModificarTipoDeEntradaDelCanal(Int32 canal, Int32 entrada)  { configuracionTipoDeEntrada[canal] = entrada; }
+        public void ModificarBiasDelCanal(Int32 canal, bool bias)               { configuracionBIAS[canal] = bias; }
+        public void ModificarSRB1DelCanal(Int32 canal, bool SRB1)               { configuracionSRB1[canal] = SRB1; }
+        public void ModificarSRB2DelCanal(Int32 canal, bool SRB2)               { configuracionSRB2[canal] = SRB2; }
+        
+
+        // Funciones para leer los datos de las configuraciones de medicion de la impedancia
+        public bool LeerImpedanciaMidiendo(Int32 canal) { return (configuracionImpendanciaMidiendo[canal]); }
+        public bool LeerImpedanciaContactoPDelCanal(Int32 canal) { return (configuracionImpendanciaContactoP[canal]); }
+        public bool LeerImpedanciaContactoNDelCanal(Int32 canal) { return (configuracionImpendanciaContactoN[canal]); }
+
+        // Funciones para escribir los datos de las impedancias
+        public void ModificarImpedanciaMidiendo(Int32 canal, bool opcion) { configuracionImpendanciaMidiendo[canal] = opcion; }
+        public void ModificarImpedanciaContactoPDelCanal(Int32 canal, bool opcion) { configuracionImpendanciaContactoP[canal] = opcion; }
+        public void ModificarImpedanciaContactoNDelCanal(Int32 canal, bool opcion) { configuracionImpendanciaContactoN[canal] = opcion; }
+
+
+
+
 
 
         /***    METODOS "SET" Y "GET" PARA ACCEDER LAS PROPIEDADES DEL OBJETO    ***/
@@ -1660,14 +1763,14 @@ namespace AplicacionPaper
         /****************************************************************/
         private void AlmacenarTrama()
         {
-            CanalUno.Add(ConvertirBytesEnInt(trama[CanalUno_ByteAlto], trama[CanalUno_ByteMedio], trama[CanalUno_ByteBajo]));
-            CanalDos.Add(ConvertirBytesEnInt(trama[CanalDos_ByteAlto], trama[CanalDos_ByteMedio], trama[CanalDos_ByteBajo]));
-            CanalTres.Add(ConvertirBytesEnInt(trama[CanalTres_ByteAlto], trama[CanalTres_ByteMedio], trama[CanalTres_ByteBajo]));
-            CanalCuatro.Add(ConvertirBytesEnInt(trama[CanalCuatro_ByteAlto], trama[CanalCuatro_ByteMedio], trama[CanalCuatro_ByteBajo]));
-            CanalCinco.Add(ConvertirBytesEnInt(trama[CanalCinco_ByteAlto], trama[CanalCinco_ByteMedio], trama[CanalCinco_ByteBajo]));
-            CanalSeis.Add(ConvertirBytesEnInt(trama[CanalSeis_ByteAlto], trama[CanalSeis_ByteMedio], trama[CanalSeis_ByteBajo]));
-            CanalSiete.Add(ConvertirBytesEnInt(trama[CanalSiete_ByteAlto], trama[CanalSiete_ByteMedio], trama[CanalSiete_ByteBajo]));
-            CanalOcho.Add(ConvertirBytesEnInt(trama[CanalOcho_ByteAlto], trama[CanalOcho_ByteMedio], trama[CanalOcho_ByteBajo]));
+            CanalUno.Add(ConvertirBytesEnInt(trama[CanalUno_ByteAlto], trama[CanalUno_ByteMedio], trama[CanalUno_ByteBajo], CANAL_1));
+            CanalDos.Add(ConvertirBytesEnInt(trama[CanalDos_ByteAlto], trama[CanalDos_ByteMedio], trama[CanalDos_ByteBajo], CANAL_2));
+            CanalTres.Add(ConvertirBytesEnInt(trama[CanalTres_ByteAlto], trama[CanalTres_ByteMedio], trama[CanalTres_ByteBajo], CANAL_3));
+            CanalCuatro.Add(ConvertirBytesEnInt(trama[CanalCuatro_ByteAlto], trama[CanalCuatro_ByteMedio], trama[CanalCuatro_ByteBajo], CANAL_4));
+            CanalCinco.Add(ConvertirBytesEnInt(trama[CanalCinco_ByteAlto], trama[CanalCinco_ByteMedio], trama[CanalCinco_ByteBajo], CANAL_5));
+            CanalSeis.Add(ConvertirBytesEnInt(trama[CanalSeis_ByteAlto], trama[CanalSeis_ByteMedio], trama[CanalSeis_ByteBajo], CANAL_6));
+            CanalSiete.Add(ConvertirBytesEnInt(trama[CanalSiete_ByteAlto], trama[CanalSiete_ByteMedio], trama[CanalSiete_ByteBajo], CANAL_7));
+            CanalOcho.Add(ConvertirBytesEnInt(trama[CanalOcho_ByteAlto], trama[CanalOcho_ByteMedio], trama[CanalOcho_ByteBajo], CANAL_8));
             NumerosDeTramas.Add(trama[ContadorDeTramasPosicion]);
         }
 
@@ -1680,9 +1783,10 @@ namespace AplicacionPaper
         /* Recibe: Los 3 bytes de informacion                           */
         /* Devuelve: Un Int32 con el dato desempaquetado                */
         /****************************************************************/
-        private Int32 ConvertirBytesEnInt(byte ParteAlta, byte ParteMedia, byte ParteBaja)
+        private Int32 ConvertirBytesEnInt(byte ParteAlta, byte ParteMedia, byte ParteBaja, Int32 canal)
         {
             Int32 Dato, Auxiliar;
+            Int32 ganancia;
 
             Dato = ParteAlta << 16;
             Auxiliar = ParteMedia << 8;
@@ -1702,6 +1806,33 @@ namespace AplicacionPaper
                 Dato = Dato & Auxiliar;
             }
 
+            canal--;        // Esto es porque las listas arrancan desde cero y el numero del canal arranca en 1
+            switch (configuracionGanancia[canal])
+            {
+                case GANANCIA_1:
+                    ganancia = 1;
+                    break;
+                case GANANCIA_2:
+                    ganancia = 2;
+                    break;
+                case GANANCIA_4:
+                    ganancia = 4;
+                    break;
+                case GANANCIA_6:
+                    ganancia = 6;
+                    break;
+                case GANANCIA_8:
+                    ganancia = 8;
+                    break;
+                case GANANCIA_12:
+                    ganancia = 12;
+                    break;
+                case GANANCIA_24:
+                default:
+                    ganancia = 24;
+                    break;
+            }
+            ConstanteDeEscala = (1000000 * 4.5) / ( ganancia * ( Math.Pow(2, 23) - 1 ) );
             Dato = Convert.ToInt32(Dato * ConstanteDeEscala);
 
             return (Dato);
@@ -1804,21 +1935,21 @@ namespace AplicacionPaper
         private void DuplicarUltimoValor()
         {
             // Se copian los datos en los canales activos
-            if(canalUnoEncendido==true)
+            if (configuracionEncendido[CANAL_1 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_1);
-            if (canalDosEncendido == true)
+            if (configuracionEncendido[CANAL_2 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_2);
-            if (canalTresEncendido == true)
+            if (configuracionEncendido[CANAL_3 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_3);
-            if (canalCuatroEncendido == true)
+            if (configuracionEncendido[CANAL_4 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_4);
-            if (canalCincoEncendido == true)
+            if (configuracionEncendido[CANAL_5 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_5);
-            if (canalSeisEncendido == true)
+            if (configuracionEncendido[CANAL_6 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_6);
-            if (canalSieteEncendido == true)
+            if (configuracionEncendido[CANAL_7 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_7);
-            if (canalOchoEncendido == true)
+            if (configuracionEncendido[CANAL_8 - 1] == CANAL_PRENDIDO)
                 DuplicarUltimoValorEnCanal(CANAL_8);
 
             // Luego se actualiza tambien el contador de tramas. Solo se deberia hacer si hay almenos un canal activo, pero esto no va a pasar
@@ -1880,28 +2011,28 @@ namespace AplicacionPaper
             switch (canal)
             {
                 case CANAL_1:
-                    canalUnoEncendido = true;
+                    configuracionEncendido[CANAL_1 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_2:
-                    canalDosEncendido = true;
+                    configuracionEncendido[CANAL_2 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_3:
-                    canalTresEncendido = true;
+                    configuracionEncendido[CANAL_3 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_4:
-                    canalCuatroEncendido = true;
+                    configuracionEncendido[CANAL_4 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_5:
-                    canalCincoEncendido = true;
+                    configuracionEncendido[CANAL_5 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_6:
-                    canalSeisEncendido = true;
+                    configuracionEncendido[CANAL_6 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_7:
-                    canalSieteEncendido = true;
+                    configuracionEncendido[CANAL_7 - 1] = CANAL_PRENDIDO;
                     break;
                 case CANAL_8:
-                    canalOchoEncendido = true;
+                    configuracionEncendido[CANAL_8 - 1] = CANAL_PRENDIDO;
                     break;
             }
         }
@@ -1920,28 +2051,28 @@ namespace AplicacionPaper
             switch (canal)
             {
                 case CANAL_1:
-                    canalUnoEncendido = false;
+                    configuracionEncendido[CANAL_1 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_2:
-                    canalDosEncendido = false;
+                    configuracionEncendido[CANAL_2 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_3:
-                    canalTresEncendido = false;
+                    configuracionEncendido[CANAL_3 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_4:
-                    canalCuatroEncendido = false;
+                    configuracionEncendido[CANAL_4 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_5:
-                    canalCincoEncendido = false;
+                    configuracionEncendido[CANAL_5 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_6:
-                    canalSeisEncendido = false;
+                    configuracionEncendido[CANAL_6 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_7:
-                    canalSieteEncendido = false;
+                    configuracionEncendido[CANAL_7 - 1] = CANAL_APAGADO;
                     break;
                 case CANAL_8:
-                    canalOchoEncendido = false;
+                    configuracionEncendido[CANAL_8 - 1] = CANAL_APAGADO;
                     break;
             }
         }
@@ -1959,22 +2090,22 @@ namespace AplicacionPaper
         private void EliminarPrimerMuestraNula()
         {
             // Si el canal esta encendido, se elimina la primer muestra nula
-            
-            if (canalUnoEncendido == true)
+
+            if (configuracionEncendido[CANAL_1 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalUno );
-            if (canalDosEncendido == true)
+            if (configuracionEncendido[CANAL_2 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalDos );
-            if (canalTresEncendido == true)
+            if (configuracionEncendido[CANAL_3 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalTres );
-            if (canalCuatroEncendido == true)
+            if (configuracionEncendido[CANAL_4 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalCuatro );
-            if (canalCincoEncendido == true)
+            if (configuracionEncendido[CANAL_5 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalCinco );
-            if (canalSeisEncendido == true)
+            if (configuracionEncendido[CANAL_6 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalSeis );
-            if (canalSieteEncendido == true)
+            if (configuracionEncendido[CANAL_7 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalSiete );
-            if (canalOchoEncendido == true)
+            if (configuracionEncendido[CANAL_8 - 1] == CANAL_PRENDIDO)
                 EliminarPrimerMuestraNulaEnCanal( CanalOcho );
         }
 

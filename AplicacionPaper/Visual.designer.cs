@@ -260,6 +260,7 @@
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.groupBox2);
             this.Name = "Visual";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuración visual";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Visual_FormClosing);

@@ -223,6 +223,7 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
             this.Name = "OpcionesFrecuenciales";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuracion - Frecuencial";
             this.groupBox2.ResumeLayout(false);

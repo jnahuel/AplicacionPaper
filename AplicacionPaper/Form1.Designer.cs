@@ -32,14 +32,15 @@
             this.configuracionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.comunicacionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.secuencialToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frecuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configuracionVisualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datosPersonalesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iniciarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detenerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reiniciarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.frecuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +61,8 @@
             this.comunicacionToolStripMenuItem,
             this.secuencialToolStripMenuItem1,
             this.configuracionVisualToolStripMenuItem,
-            this.datosPersonalesToolStripMenuItem});
+            this.datosPersonalesToolStripMenuItem,
+            this.hardwareToolStripMenuItem});
             this.configuracionToolStripMenuItem.Name = "configuracionToolStripMenuItem";
             this.configuracionToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
             this.configuracionToolStripMenuItem.Text = "Configuración";
@@ -80,6 +82,20 @@
             this.secuencialToolStripMenuItem1.Name = "secuencialToolStripMenuItem1";
             this.secuencialToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
             this.secuencialToolStripMenuItem1.Text = "Tipo de estudio";
+            // 
+            // secuencialToolStripMenuItem
+            // 
+            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
+            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.secuencialToolStripMenuItem.Text = "Secuencial";
+            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.secuencialToolStripMenuItem_Click);
+            // 
+            // frecuencialToolStripMenuItem
+            // 
+            this.frecuencialToolStripMenuItem.Name = "frecuencialToolStripMenuItem";
+            this.frecuencialToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.frecuencialToolStripMenuItem.Text = "Frecuencial";
+            this.frecuencialToolStripMenuItem.Click += new System.EventHandler(this.frecuencialToolStripMenuItem_Click);
             // 
             // configuracionVisualToolStripMenuItem
             // 
@@ -126,19 +142,12 @@
             this.reiniciarToolStripMenuItem.Text = "Reiniciar";
             this.reiniciarToolStripMenuItem.Click += new System.EventHandler(this.reiniciarToolStripMenuItem_Click);
             // 
-            // secuencialToolStripMenuItem
+            // hardwareToolStripMenuItem
             // 
-            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
-            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.secuencialToolStripMenuItem.Text = "Secuencial";
-            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.secuencialToolStripMenuItem_Click);
-            // 
-            // frecuencialToolStripMenuItem
-            // 
-            this.frecuencialToolStripMenuItem.Name = "frecuencialToolStripMenuItem";
-            this.frecuencialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.frecuencialToolStripMenuItem.Text = "Frecuencial";
-            this.frecuencialToolStripMenuItem.Click += new System.EventHandler(this.frecuencialToolStripMenuItem_Click);
+            this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
+            this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.hardwareToolStripMenuItem.Text = "Hardware";
+            this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -173,6 +182,7 @@
         private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem frecuencialToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hardwareToolStripMenuItem;
     }
 }
 

@@ -94,6 +94,7 @@ namespace AplicacionPaper
             detenerToolStripMenuItem.Enabled = false;
             reiniciarToolStripMenuItem.Enabled = false;
             accionesToolStripMenuItem.Enabled = false;
+            hardwareToolStripMenuItem.Enabled = false;
 
             // Inicializacion de la conexion con la base de datos
             conexionBaseDatosString = System.Configuration.ConfigurationManager.ConnectionStrings["db"].ConnectionString;
@@ -124,6 +125,7 @@ namespace AplicacionPaper
                     iniciarToolStripMenuItem.Enabled = true;
                     detenerToolStripMenuItem.Enabled = false;
                     reiniciarToolStripMenuItem.Enabled = true;
+                    hardwareToolStripMenuItem.Enabled = true;
                     MessageBox.Show("Se establecio la comunicacion correctamente.");
                 }
                 else { MessageBox.Show(Casco.Error); }
@@ -230,6 +232,27 @@ namespace AplicacionPaper
             }
         }
 
+        // Submenu para realizar las configuraciones de funcionamiento del hardware del casco
+        private void hardwareToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigurarHardware formularioConfiguracionHardware = new ConfigurarHardware( Casco );
+            if (formularioConfiguracionHardware.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                // Se corto la comunicacion en el formulario y se debe reiniciar
+                comunicacionToolStripMenuItem.Enabled = true;
+                reiniciarToolStripMenuItem.Enabled = false;
+                accionesToolStripMenuItem.Enabled = false;
+
+                // Se cierra el puerto serie
+                Casco.TerminarComunicacionSerie();
+            }
+            else
+            {
+                // Salio bien y se reconfiguraron los canales
+                Casco = formularioConfiguracionHardware.Casco;
+            }
+        }
+
 
 
         /********************************************************************************************************************************************/
@@ -279,6 +302,7 @@ namespace AplicacionPaper
                 detenerToolStripMenuItem.Enabled = true;
                 iniciarToolStripMenuItem.Enabled = false;
                 reiniciarToolStripMenuItem.Enabled = false;
+                hardwareToolStripMenuItem.Enabled = false;
 
                 // A su vez, mientras esté en curso, no pueden modificar los parametros
                 configuracionToolStripMenuItem.Enabled = false;
@@ -326,6 +350,7 @@ namespace AplicacionPaper
             detenerToolStripMenuItem.Enabled = false;
             reiniciarToolStripMenuItem.Enabled = true;
             configuracionToolStripMenuItem.Enabled = true;
+            hardwareToolStripMenuItem.Enabled = true;
 
             // Por último, se repasan todos los botones para que ninguno quede en estado de excitación
             foreach (Control boton in Controls) { if (boton is Button) { boton.ForeColor = Color.FromName(ConfiguracionDeLosEstimulos.ColorDescanso); } }
@@ -342,6 +367,7 @@ namespace AplicacionPaper
             comunicacionToolStripMenuItem.Enabled = true;
             reiniciarToolStripMenuItem.Enabled = false;
             accionesToolStripMenuItem.Enabled = false;
+            hardwareToolStripMenuItem.Enabled = false;
 
             // Se cierra el puerto serie
             Casco.TerminarComunicacionSerie();
@@ -671,6 +697,7 @@ namespace AplicacionPaper
                 detenerToolStripMenuItem.Enabled = false;
                 reiniciarToolStripMenuItem.Enabled = true;
                 configuracionToolStripMenuItem.Enabled = true;
+                hardwareToolStripMenuItem.Enabled = false;
 
                 // Se dejan todos los botones en estado de descanso
                 foreach (Control boton in Controls)
@@ -700,6 +727,7 @@ namespace AplicacionPaper
             detenerToolStripMenuItem.Enabled = false;
             reiniciarToolStripMenuItem.Enabled = true;
             configuracionToolStripMenuItem.Enabled = true;
+            hardwareToolStripMenuItem.Enabled = true;
 
             // Se reestablecen las opciones para modificar el tamaño de la pantalla
             this.MaximizeBox = true;

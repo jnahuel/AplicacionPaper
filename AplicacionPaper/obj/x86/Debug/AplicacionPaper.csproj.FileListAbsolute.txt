@@ -85,3 +85,4 @@ C:\Users\Nahuel\Desktop\09-03\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\De
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.MostrarPorcentaje.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.OpcionesSecuenciales.resources
 D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.OpcionesFrecuenciales.resources
+D:\RepoGit\AplicacionPaper\AplicacionPaper\obj\x86\Debug\AplicacionPaper.ConfigurarHardware.resources

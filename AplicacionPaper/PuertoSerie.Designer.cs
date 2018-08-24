@@ -87,6 +87,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PuertoSerie";
+            this.ShowIcon = false;
             this.Text = "Configuración del puerto serie";
             this.ResumeLayout(false);
             this.PerformLayout();

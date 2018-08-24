@@ -85,6 +85,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Name = "MostrarPorcentaje";
+            this.ShowIcon = false;
             this.Text = "Por favor aguarde";
             this.ResumeLayout(false);
             this.PerformLayout();
